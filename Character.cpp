@@ -16,6 +16,7 @@ void Character::takeDamage(int damage) {
     m_health = std::clamp(m_health - result, 0, std::numeric_limits<int>::max());
 }
 
+
 void Character::hpRegenIncrease(int amount) {
     int result = m_hpRegen + amount;
     m_hpRegen = std::clamp(result, 0, m_maxHealth);
@@ -31,6 +32,9 @@ void Character::setMaxHealth(int maxhealth) {
     if (m_health> m_maxHealth) {
         m_health = m_maxHealth;
     }
+    if (m_hpRegen > m_maxHealth) {
+        m_hpRegen = m_maxHealth;
+    }
 }
 void Character::setHealth(int health) {
     int result = std::clamp(health, 0, std::numeric_limits<int>::max());
@@ -44,6 +48,11 @@ void Character::regenHealth() {
     m_health = std::clamp(m_health + m_hpRegen, 0, m_maxHealth);
 }
 
+
+void Character::increaseHealth(int amount) {
+    if (amount <= 0) {return;}
+    m_health = std::clamp(m_health + amount, m_health, m_maxHealth);
+}
 void Character::increaseMaxHealth(int amount) {
 
     m_maxHealth += std::clamp(amount, 0, std::numeric_limits<int>::max());
@@ -71,6 +80,9 @@ void Character::setMaxMana(int maxmana) {
 
     if (m_mana > m_maxMana) {
         m_mana = m_maxMana;
+    }
+    if (m_manaRegen > m_maxMana) {
+        m_manaRegen = m_maxMana;
     }
 }
 
@@ -210,7 +222,7 @@ void Character::decreaseCritChanceMultiplier(float multiplier) {
 
     multiplier = std::clamp(multiplier, 0.0f, 1.0f);
 
-    m_critChance = static_cast<int>(std::lround(m_critChance * (1.0f - multiplier)));
+    m_critChance = static_cast<int>(std::lround(m_critChance * multiplier));
 
     m_critChance = std::clamp(m_critChance, 0, 100);
 }
@@ -279,21 +291,12 @@ void Character::decrementTicks() {
     if (m_turnsInvisible > 0) { --m_turnsInvisible; }
     if (m_poisonedTurns > 0) { --m_poisonedTurns; }
     if (m_burnedTurns > 0) { --m_burnedTurns; }
+    if (m_turnsExhausted > 0) { --m_turnsExhausted; }
+    if (m_turnsDrowned > 0) { --m_turnsDrowned; }
 }
 
-void Character::applyStun(int turns){
-    if ((m_stunTurns + turns) > 5) { m_stunTurns = 5; }else{m_stunTurns += turns;}
-}
 void Character::getDamageReduced(int turns) {
     if ((m_damageReducedTurns + turns) > 5) { m_damageReducedTurns = 5; }else{m_damageReducedTurns += turns;}
-}
-
-void Character::turnInvisible(int turns) {
-    if ((m_turnsInvisible + turns) > 5) { m_turnsInvisible = 5; }else{m_turnsInvisible += turns;}
-}
-
-void Character::getPoisoned(int turns) {
-    if ((m_poisonedTurns + turns) > 5) { m_poisonedTurns = 5; }else{m_poisonedTurns += turns;}
 }
 
 void Character::getBurned(int turns) {
@@ -310,4 +313,21 @@ void Character::increaseTurnsPoisoned(int amount)
 }
 void Character::increaseTurnsStun(int amount) {
     if (m_stunTurns + amount >= 5) { m_stunTurns = 5;}else{m_stunTurns += amount;}
+}
+
+
+void Character::increaseTurnsExhausted(int amount) {
+    if (m_turnsExhausted + amount >= 5 ) { m_turnsExhausted = 5;}else{m_turnsExhausted += amount;}
+}
+
+void Character::increaseRevivalEffect(int amount) {
+    if (m_revivaleffect > 0){m_revivaleffect = 1;}else{m_revivaleffect += amount;}
+}
+
+void Character::increaseTurnsDrowned(int amount) {
+    if (m_turnsDrowned + amount >= 5) {m_turnsDrowned = 5;}else{m_turnsDrowned += amount;}
+    }
+
+void Character::setLifesteal(int amount) {
+    m_lifesteal = std::clamp(amount, 0, 100);
 }

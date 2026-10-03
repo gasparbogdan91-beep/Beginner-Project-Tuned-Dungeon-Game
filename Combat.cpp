@@ -2,10 +2,11 @@
 // Created by bgdan on 10/3/26.
 //
 
-#include "cmake-build-debug/Combat.h"
+
 #include "RollRNG.h"
 #include "Character.h"
 #include "MonsterTable.h"
+#include "Combat.h"
 
 // RNG System
 

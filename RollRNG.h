@@ -15,6 +15,7 @@
 
     inline std::uniform_int_distribution<int> roll100 {1, 100 };
     inline std::uniform_int_distribution<int> roll25 {1, 25 };
+    inline std::uniform_int_distribution<int> rollboon {1, 37 };
 
 
 #endif //PROJECT1_ROLLRNG_H
