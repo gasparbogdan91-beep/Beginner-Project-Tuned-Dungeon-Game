@@ -1,6 +1,6 @@
-# Dungeon1
+# Tuned Dungeon Game
 
-A turn-based dungeon crawler written in C++23. I'm building it to learn C++ (I come from Python), so it's a work in progress and there's nothing playable yet.
+A turn-based dungeon crawler written in C++23. I'm building it to learn C++ (starting Programming from scratch, only 3 weeks of Python prior knowledge and internet rabbitholes, so it's a work in progress and there's nothing playable yet).
 
 ## What's in it so far
 
