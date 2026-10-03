@@ -13,7 +13,8 @@
     inline std::seed_seq ss { rd(), rd(), rd(), rd(), rd(), rd(), rd(), rd() };
     inline std::mt19937 rng { ss };
 
-    inline std::uniform_int_distribution<int> roll {1, 100 };
+    inline std::uniform_int_distribution<int> roll100 {1, 100 };
+    inline std::uniform_int_distribution<int> roll25 {1, 25 };
 
 
 #endif //PROJECT1_ROLLRNG_H

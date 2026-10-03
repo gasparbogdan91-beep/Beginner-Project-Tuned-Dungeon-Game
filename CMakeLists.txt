@@ -3,12 +3,15 @@ project(project1)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(1 main.cpp
-        Player.cpp
-        Player.h
+add_executable(1
+        main.cpp
+        Character.cpp
+        Character.h
         Config.h
-        Monster.cpp
-        Monster.h
-        RollRNG.h)
+        RollRNG.h
+        MonsterTable.h
+        Combat.cpp
+        Combat.h
+)
 
 target_compile_options(1 PRIVATE -Wall -Wextra)

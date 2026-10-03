@@ -2,12 +2,29 @@
 // Created by bgdan on 10/1/26.
 //
 
-#ifndef INC_1_PLAYER_H
-#define INC_1_PLAYER_H
+#ifndef INC_1_CHARACTER_H
+#define INC_1_CHARACTER_H
 #include <cassert>
 
+struct CharacterStats {
+    int health{100};
+    int maxHealth{100};
+    int mana{100};
+    int maxMana{100};
+    int defense{10};
+    int skillPower{5};
+    int evadeChance{0};
+    int hpRegen{0};
+    int manaRegen{0};
+    int attackDamage{20};
+    int critChance{0};
+    int attackSpeed{1};
+    int xp{0};
+    int level{1};
 
-class Player {
+};
+
+class Character {
 private:
     int m_health{100};
     int m_maxHealth{100};
@@ -24,16 +41,21 @@ private:
     int m_turnsInvisible{0};
     int m_poisonedTurns{0};
     int m_burnedTurns{0};
+    int m_critChance{0};
+    int m_attackSpeed{1};
+    int m_xp{0};
+    int m_level{1};
+
+    void gainLevel();
 public:
-    Player(int hp, int maxhp, int mana, int maxmana, int defense,
-            int skillpower, int evadechance, int hpregen,
-            int manaregen, int attackdamage, int stunturns, int damagereducedturns,
-            int turnsInvisible,int poisonedturns, int burnedturns)
-        :  m_health { hp }, m_maxHealth { maxhp }, m_mana { mana },
-            m_maxMana { maxmana }, m_defense { defense }, m_skillPower { skillpower },
-            m_evadeChance { evadechance}, m_hpRegen { hpregen }, m_manaRegen { manaregen},
-            m_attackDamage {attackdamage}, m_stunTurns { stunturns }, m_damageReducedTurns{ damagereducedturns },
-            m_turnsInvisible{ turnsInvisible }, m_poisonedTurns { poisonedturns }, m_burnedTurns { burnedturns } {
+    explicit Character(const CharacterStats& stats)
+        :  m_health { stats.health }, m_maxHealth { stats.maxHealth }, m_mana { stats.mana },
+            m_maxMana { stats.maxMana }, m_defense { stats.defense}, m_skillPower { stats.skillPower },
+            m_evadeChance { stats.evadeChance}, m_hpRegen { stats.hpRegen }, m_manaRegen { stats.manaRegen },
+            m_attackDamage {stats.attackDamage}, m_critChance{ stats.critChance }, m_attackSpeed { stats.attackSpeed },
+            m_xp { stats.xp }, m_level { stats.level }
+
+    {
         assert(m_health >= 0 && "Health is less than 0");
         assert(m_maxHealth >= 0 && "Max health is less than 0");
         assert(m_maxMana >= 0 && "Max mana is less than 0");
@@ -42,19 +64,17 @@ public:
         assert(m_evadeChance >= 0 && "Evade chance is less than 0");
         assert(m_hpRegen >= 0 && "HP regen is less than 0");
         assert(m_manaRegen >= 0 && "Mana regen is less than 0");
-        assert(m_stunTurns >= 0 && "Stun turns is less than 0");
-        assert(m_damageReducedTurns >= 0 && "Damage Reduced turns is less than 0");
-        assert(m_turnsInvisible >= 0 && "Turns invisible is less than 0");
-        assert(m_poisonedTurns >= 0 && "Poisoned turns is less than 0");
-        assert(m_burnedTurns >= 0 && "Burned turns is less than 0");
-
-
-
-
+        assert(m_mana >= 0 && "Mana is less than 0");
+        assert(m_health <= m_maxHealth && "Health is less than maxHP");
+        assert(m_mana <= m_maxMana && "Mana is less than maxMana");
+        assert(m_critChance >= 0 && "Crit chance is less than 0");
+        assert(m_attackSpeed >= 1 && "Attack speed is less than 1");
+        assert(m_xp >= 0 && "XP is less than 0");
+        assert(m_level >= 1 && "Level is less than 1");
     }
 
     // getters
-
+    [[nodiscard]] int getCritChance() const { return m_critChance; };
     [[nodiscard]] int getHealth() const { return m_health; };
     [[nodiscard]] int getMaxHealth() const { return m_maxHealth; };
     [[nodiscard]] int getMana() const { return m_mana; };
@@ -65,6 +85,10 @@ public:
     [[nodiscard]] int getHpRegen() const { return m_hpRegen; };
     [[nodiscard]] int getManaRegen() const { return m_manaRegen; };
     [[nodiscard]] int getAttackDamage() const { return m_attackDamage; };
+    [[nodiscard]] int getAttackSpeed() const { return m_attackSpeed;  };
+    [[nodiscard]] int getXp() const { return m_xp; };
+    [[nodiscard]] int getLevel() const { return m_level; };
+    [[nodiscard]] int xpToNextLevel() const ;
 
 
     //debuff checkers
@@ -112,7 +136,21 @@ public:
     void getBurned(int turns);
     void skillPowerIncreaseMultiplier(float multiplier);
     void defenseDecreaseByMultiplier(float multiplier) ;
+    void increaseCritChance(int amount);
+    void decreaseCritChance(int amount);
+    void increaseCritChanceMultiplier(float multiplier);
+    void decreaseCritChanceMultiplier(float multiplier);
+    void increaseAttackSpeed(int hitsperturn);
+    void setAttackSpeed(int hitsperturn);
+    void setXp(int xp);
+    void addXp(int amount);
+    void setLevel(int level);
+    void increaseLevel(int amount);
+    void increaseTurnsInvisible(int amount);
+    void increaseTurnsPoisoned(int amount);
+    void increaseTurnsStun(int amount);
+
 };
 
 
-#endif //INC_1_PLAYER_H
+#endif //INC_1_CHARACTER_H
