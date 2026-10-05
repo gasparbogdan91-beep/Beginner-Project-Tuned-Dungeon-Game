@@ -16,3 +16,5 @@ A turn-based dungeon crawler written in C++23. I'm building it to learn C++ (sta
 - I'm yet  to design the combat loops and skills.
 - Will power it with Raylib
 
+What CLAUDE has to do with all this:
+- I use it for the sole purpose of reviewing code for syntax/logic errors, and for asserts/testing (it saves me a LOT of time). The design system and the approach method are my choices.
