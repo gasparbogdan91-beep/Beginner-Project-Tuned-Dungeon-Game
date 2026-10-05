@@ -10,10 +10,11 @@
 // A character with getAttackSpeed() == 0 cannot basic-attack, so Combat needs an
 // alternative action for that case (e.g. skills only, or a fallback single hit).
 
-struct applyDebuff {
-    static constexpr void StunTarget(Character& target) {
-        if (target.isStunned()){//skipturn//}
-        }
-    };
-};
+
+
+
+
+
+
+
 #endif //PROJECT1_COMBAT_H

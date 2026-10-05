@@ -12,6 +12,9 @@ add_executable(1
         MonsterTable.h
         Combat.cpp
         Combat.h
+        Boon.cpp
+        Boon.h
+        SkillId.h
 )
 
 target_compile_options(1 PRIVATE -Wall -Wextra)

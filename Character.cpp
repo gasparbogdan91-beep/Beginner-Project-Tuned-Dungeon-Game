@@ -16,7 +16,10 @@ void Character::takeDamage(int damage) {
     m_health = std::clamp(m_health - result, 0, std::numeric_limits<int>::max());
 }
 
-
+void Character::takeTrueDamage(int damage) {
+    damage = std::clamp(damage, 0, std::numeric_limits<int>::max());
+    m_health = std::clamp(m_health - damage, 0, std::numeric_limits<int>::max());
+}
 void Character::hpRegenIncrease(int amount) {
     int result = m_hpRegen + amount;
     m_hpRegen = std::clamp(result, 0, m_maxHealth);
@@ -331,3 +334,103 @@ void Character::increaseTurnsDrowned(int amount) {
 void Character::setLifesteal(int amount) {
     m_lifesteal = std::clamp(amount, 0, 100);
 }
+
+
+
+//combat modifiers
+bool Character::hasCrit() {
+    int getter = getCritChance();
+    int result = roll100(rng);
+    return result <= getter; //if result smaller than the critchance returns bool true
+
+}
+
+
+bool Character::hasEvaded() {
+    int getter = getEvadeChance();
+    int result = roll100(rng);
+    return result <= getter;
+}
+
+
+namespace {
+unsigned skillBit(SkillId skill) {
+    const unsigned id { static_cast<unsigned>(skill) };
+    assert(id < 32 && "SkillId does not fit in the mask");
+    return 1u << id;
+}
+}
+
+void Character::castSkill(SkillId skill, Character& caster, Character& target) {
+    switch (skill) {
+        case SkillId::Invisible:         Target::castInvisible(caster); break;
+        case SkillId::Burn:              Target::castBurn(target); break;
+        case SkillId::Strengthen:      Target::castStrengthened(caster); break;
+        case SkillId::Flurry:            Target::castFlurry(target,caster); break;
+        case SkillId::Stun:              Target::castStun(target); break;
+        case SkillId::Fear:             Target::castFear(target); break;
+        case SkillId::Poison:           Target::castPoison(target); break;
+        case SkillId::Skyfall:           Target::castSkyfall(target, caster); break;
+        case SkillId::Chaos:             Target::castChaos(target); break;
+        case SkillId::MagmaChamber:      Target::castMagmaChamber(target, caster); break;
+        case SkillId::StoneThrow:        Target::castStoneThrow(target, caster); break;
+        case SkillId::Agile:            Target::castAgile(caster); break;
+        case SkillId::Heal:             Target::castHeal(caster); break;
+
+
+
+        case SkillId::Exhaust:         Target::castExhaust(target); break;
+        case SkillId::Drown:           Target::castDrown(target); break;
+        case SkillId::Consumption:     Target::castConsumption(caster); break;
+        case SkillId::Plague:          Target::castPlague(target); break;
+        case SkillId::Revival:         Target::castRevival(target); break;
+        case SkillId::Ruin:            Target::castRuin(target); break;
+        case SkillId::Vampire:          Target::castVampire(target, caster); break;
+        case SkillId::Explosion:         Target::castExplosion(target, caster); break;
+
+        default:   break;
+    }
+
+
+
+
+
+}
+
+void Character::learnSkill(SkillId skill) {
+    m_acquiredSkills |= skillBit(skill);
+}
+
+bool Character::hasAcquiredSkill(SkillId skill) const {
+    return (m_acquiredSkills & skillBit(skill)) != 0;
+}
+
+int Character::getSkillCost(SkillId skill) const {
+    switch (skill) {
+        case SkillId::Invisible:    return ManaCost::invisibleusage * m_level;
+        case SkillId::Burn:         return ManaCost::burnusage * m_level;
+        case SkillId::Poison:       return ManaCost::poisonusage * m_level;
+        case SkillId::Strengthen:   return ManaCost::strengthenusage * m_level;
+        case SkillId::Flurry:       return ManaCost::flurryusage * m_level;
+        case SkillId::Chaos:        return ManaCost::chaosusage * m_level;
+        case SkillId::Skyfall:      return ManaCost::skyfallusage * m_level;
+        case SkillId::MagmaChamber: return ManaCost::magmausage * m_level;
+        case SkillId::Stun:         return ManaCost::stunusage * m_level;
+        case SkillId::Fear:         return ManaCost::fearusage * m_level;
+        case SkillId::StoneThrow:   return ManaCost::stonethrowusage * m_level;
+        case SkillId::Agile:        return ManaCost::agileusage * m_level;
+        case SkillId::Heal:         return ManaCost::healusage * m_level;
+        case SkillId::Exhaust:      return ManaCost::exhaustusage * m_level;
+        case SkillId::Drown:        return ManaCost::drownusage * m_level;
+        case SkillId::Consumption:  return ManaCost::consumptionusage * m_level;
+        case SkillId::Plague:       return ManaCost::plagueusage * m_level;
+        case SkillId::Revival:      return ManaCost::revivalusage * m_level;
+        case SkillId::Ruin:         return ManaCost::ruinusage * m_level;
+        case SkillId::Vampire:      return ManaCost::vampireusage * m_level;
+        case SkillId::Explosion:    return ManaCost::explosionusage * m_level;
+    }
+    assert(false && "getSkillCost: unknown SkillId");
+    return 0;
+
+}
+

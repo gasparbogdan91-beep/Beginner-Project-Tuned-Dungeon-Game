@@ -5,6 +5,7 @@
 #ifndef INC_1_CHARACTER_H
 #define INC_1_CHARACTER_H
 #include <cassert>
+#include "SkillId.h"
 
 struct CharacterStats {
     int health{100};
@@ -53,6 +54,7 @@ private:
     void gainLevel();
     int m_turnsDrowned{0};
     int m_lifesteal{0};
+    unsigned m_acquiredSkills{0};
 
 public:
     explicit Character(const CharacterStats& stats)
@@ -100,6 +102,7 @@ public:
     [[nodiscard]] int getXp() const { return m_xp; };
     [[nodiscard]] int getLevel() const { return m_level; };
     [[nodiscard]] int xpToNextLevel() const ;
+
 
     //debuff checkers
     [[nodiscard]] bool hasLifesteal() const { return m_lifesteal > 0; }
@@ -164,6 +167,14 @@ public:
     void increaseHealth(int amount);
     void increaseTurnsDrowned(int amount);
     void setLifesteal(int amount);
+    bool hasCrit();
+    bool hasEvaded();
+    void takeTrueDamage(int damage);
+    void learnSkill(SkillId skill);
+    [[nodiscard]] bool hasAcquiredSkill(SkillId skill) const;
+
+    void castSkill(SkillId skill, Character& caster, Character& target);
+    [[nodiscard]] int getSkillCost(SkillId skill) const;
 };
 
 
