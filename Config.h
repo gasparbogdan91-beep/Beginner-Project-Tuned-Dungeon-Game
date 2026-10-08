@@ -16,6 +16,42 @@ namespace Config {
     inline constexpr int healthPerLevel { 35 };
     inline constexpr int manaPerLevel { 40 };
     inline constexpr int defensePerLevel { 10 };
+
+    // tick damage, applied at the start of the affected character's turn
+    inline constexpr int burnTickDamage { 20 };            // flat true damage
+    inline constexpr float poisonTickPercent { 0.05f };    // of max health
+    inline constexpr float drownTickPercent { 0.3f };      // of max mana
+
+    inline constexpr float revivalHealthPercent { 0.5f };  // of max health, when Revival fires
+
+    // xp for a kill = xpRewardBase + xpRewardPerLevel * (player level)
+    inline constexpr int xpRewardBase { 50 };
+    inline constexpr int xpRewardPerLevel { 5 };
+
+    // the level at which each special skill unlocks
+    inline constexpr int exhaustUnlockLevel { 3 };
+    inline constexpr int drownUnlockLevel { 5 };
+    inline constexpr int consumptionUnlockLevel { 7 };
+    inline constexpr int plagueUnlockLevel { 9 };
+    inline constexpr int revivalUnlockLevel { 11 };
+    inline constexpr int ruinUnlockLevel { 13 };
+    inline constexpr int vampireUnlockLevel { 15 };
+    inline constexpr int explosionUnlockLevel { 17 };
+
+    // which special skill (if any) is unlocked on reaching this exact level
+    [[nodiscard]] constexpr SkillId specialSkillForLevel(int level) {
+        switch (level) {
+            case exhaustUnlockLevel:     return SkillId::Exhaust;
+            case drownUnlockLevel:       return SkillId::Drown;
+            case consumptionUnlockLevel: return SkillId::Consumption;
+            case plagueUnlockLevel:      return SkillId::Plague;
+            case revivalUnlockLevel:     return SkillId::Revival;
+            case ruinUnlockLevel:        return SkillId::Ruin;
+            case vampireUnlockLevel:     return SkillId::Vampire;
+            case explosionUnlockLevel:   return SkillId::Explosion;
+            default:                     return noSkill;
+        }
+    }
 }
 
 

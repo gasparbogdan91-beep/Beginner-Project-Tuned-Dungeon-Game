@@ -2,12 +2,9 @@
 #define PROJECT1_SKILLID_H
 
 
-// One id per skill. Each id doubles as a bit position in Character's known-skills mask,
-// so keep values below 32.
-
+#include <string_view>
 #include <vector>
 
-#include "Character.h"
 
 enum class SkillId {
     // generic
@@ -35,15 +32,35 @@ enum class SkillId {
     Explosion = 21,
 };
 
-namespace SkillDb{
-inline std::vector<SkillId> notAcquired {
-    SkillId::Invisible, SkillId::Burn, SkillId::Poison, SkillId::Strengthen,SkillId::Flurry, SkillId::Flurry,
-    SkillId::Chaos, SkillId::Skyfall, SkillId::MagmaChamber, SkillId::Stun, SkillId::Fear, SkillId::StoneThrow,
-    SkillId::Agile, SkillId::Heal, SkillId::Exhaust, SkillId::Drown, SkillId::Consumption, SkillId::Plague,
-    SkillId::Revival, SkillId::Ruin, SkillId::Vampire, SkillId::Explosion};
+// "no skill" marker for invalid input; it is not one of the enumerators on purpose,
+// so the switches over SkillId do not have to handle it.
+inline constexpr SkillId noSkill { static_cast<SkillId>(0) };
 
-
-inline std::vector<SkillId> acquiredSkills {
-};
+[[nodiscard]] constexpr std::string_view skillName(SkillId skill) {
+    switch (skill) {
+        case SkillId::Invisible:    return "Invisible";
+        case SkillId::Burn:         return "Burn";
+        case SkillId::Poison:       return "Poison";
+        case SkillId::Strengthen:   return "Strengthen";
+        case SkillId::Flurry:       return "Flurry";
+        case SkillId::Chaos:        return "Chaos";
+        case SkillId::Skyfall:      return "Skyfall";
+        case SkillId::MagmaChamber: return "Magma Chamber";
+        case SkillId::Stun:         return "Stun";
+        case SkillId::Fear:         return "Fear";
+        case SkillId::StoneThrow:   return "Stone Throw";
+        case SkillId::Agile:        return "Agile";
+        case SkillId::Heal:         return "Heal";
+        case SkillId::Exhaust:      return "Exhaust";
+        case SkillId::Drown:        return "Drown";
+        case SkillId::Consumption:  return "Consumption";
+        case SkillId::Plague:       return "Plague";
+        case SkillId::Revival:      return "Revival";
+        case SkillId::Ruin:         return "Ruin";
+        case SkillId::Vampire:      return "Vampire";
+        case SkillId::Explosion:    return "Explosion";
+    }
+    return "Unknown";
 }
+
 #endif //PROJECT1_SKILLID_H

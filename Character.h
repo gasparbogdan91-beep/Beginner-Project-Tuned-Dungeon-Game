@@ -54,9 +54,9 @@ private:
     void gainLevel();
     int m_turnsDrowned{0};
     int m_lifesteal{0};
-    unsigned m_acquiredSkills{0};
 
 
+     std::vector<SkillId> acquiredSkills {};
 
 public:
     explicit Character(const CharacterStats& stats)
@@ -180,9 +180,8 @@ public:
     [[nodiscard]] int getSkillCost(SkillId skill) const;
 
 
-    [[nodiscard]] int askChoice() const;
-    void displaySkills() const;
-    SkillId displayChooseSkills() const;
+    void useRevival();
+    [[nodiscard]] const std::vector<SkillId>& getAcquiredSkills() const { return acquiredSkills; }
 
 
 

@@ -277,6 +277,11 @@ void Character::gainLevel() {
     setMaxMana(m_maxMana + Config::manaPerLevel);
     setMana(m_mana + Config::manaPerLevel);
     defenseIncrease(Config::defensePerLevel);
+
+    const SkillId unlocked { Config::specialSkillForLevel(m_level) };
+    if (unlocked != noSkill) {
+        learnSkill(unlocked);
+    }
 }
 
 void Character::setLevel(int level) {
@@ -382,7 +387,7 @@ void Character::castSkill(SkillId skill, Character& caster, Character& target) {
         case SkillId::Drown:           Target::castDrown(target); break;
         case SkillId::Consumption:     Target::castConsumption(caster); break;
         case SkillId::Plague:          Target::castPlague(target); break;
-        case SkillId::Revival:         Target::castRevival(target); break;
+        case SkillId::Revival:         Target::castRevival(caster); break;
         case SkillId::Ruin:            Target::castRuin(target); break;
         case SkillId::Vampire:          Target::castVampire(target, caster); break;
         case SkillId::Explosion:         Target::castExplosion(target, caster); break;
@@ -397,21 +402,13 @@ void Character::castSkill(SkillId skill, Character& caster, Character& target) {
 }
 
 void Character::learnSkill(SkillId skill) {
-    for (std::size_t i{0}; i < SkillDb::notAcquired.size(), ++i)
-        if (SkillDb::notAcquired[i] == skill) {
-            SkillDb::acquiredSkills.push_back(std::move(SkillDb::notAcquired[i]));
-            SkillDb::notAcquired.erase(SkillDb::notAcquired.begin() + i);
-        }
-
+    if (!hasAcquiredSkill(skill)) {
+        acquiredSkills.push_back(skill);
+    }
 }
 
 bool Character::hasAcquiredSkill(SkillId skill) const {
-    for (auto i: SkillDb::acquiredSkills.size(), i++)
-        if (SkillDb::acquiredSkills[i] == skill) {
-            return true;
-        }
-    return false;
-
+    return std::find(acquiredSkills.begin(), acquiredSkills.end(), skill) != acquiredSkills.end();
 }
 
 int Character::getSkillCost(SkillId skill) const {
@@ -445,24 +442,6 @@ int Character::getSkillCost(SkillId skill) const {
 
 
 
-//will update ask choice when we have handleinput and draw. for now it returns random int 1-5
-int Character::askChoice() const{
-    int choice = rollchoice(rng);;
-    return choice;
+void Character::useRevival() {
+    if (m_revivaleffect > 0) { --m_revivaleffect; }
 }
-
-SkillId Character::displayChooseSkills() const {
-    for (const auto& skill : SkillDb::acquiredSkills) {
-        std::cout << static_cast<int>(skill) << std::endl;
-    }
-    int choice;
-    std::cin >> choice;
-    return static_cast<SkillId>(choice);
-}
-
-
-
-
-
-
-

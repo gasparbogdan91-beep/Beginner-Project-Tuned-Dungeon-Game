@@ -16,12 +16,12 @@ inline int basePlusScale(int value, int base, float ratio) {
     return static_cast<int>(std::lround(base+(value * ratio)));
 }
 enum class MonsterType {
-    Goblin,
-    Serpent,
-    Stoner,
-    Archer,
-    Magma,
-    Lich,
+    Goblin = 1,
+    Serpent = 2,
+    Stoner = 3,
+    Archer = 4,
+    Magma = 5,
+    Lich = 6,
 
 };
 
