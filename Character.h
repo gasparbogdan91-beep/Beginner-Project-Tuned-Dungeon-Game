@@ -56,6 +56,8 @@ private:
     int m_lifesteal{0};
     unsigned m_acquiredSkills{0};
 
+
+
 public:
     explicit Character(const CharacterStats& stats)
         :  m_health { stats.health }, m_maxHealth { stats.maxHealth }, m_mana { stats.mana },
@@ -105,6 +107,7 @@ public:
 
 
     //debuff checkers
+    [[nodiscard]] bool hasMana() const { return m_mana > 0; }
     [[nodiscard]] bool hasLifesteal() const { return m_lifesteal > 0; }
     [[nodiscard]] bool hasRevival() const { return m_revivaleffect > 0;}
     [[nodiscard]] bool isBurned() const { return m_burnedTurns > 0; }
@@ -175,6 +178,14 @@ public:
 
     void castSkill(SkillId skill, Character& caster, Character& target);
     [[nodiscard]] int getSkillCost(SkillId skill) const;
+
+
+    [[nodiscard]] int askChoice() const;
+    void displaySkills() const;
+    SkillId displayChooseSkills() const;
+
+
+
 };
 
 

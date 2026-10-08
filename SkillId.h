@@ -5,6 +5,8 @@
 // One id per skill. Each id doubles as a bit position in Character's known-skills mask,
 // so keep values below 32.
 
+#include <vector>
+
 #include "Character.h"
 
 enum class SkillId {
@@ -33,5 +35,15 @@ enum class SkillId {
     Explosion = 21,
 };
 
+namespace SkillDb{
+inline std::vector<SkillId> notAcquired {
+    SkillId::Invisible, SkillId::Burn, SkillId::Poison, SkillId::Strengthen,SkillId::Flurry, SkillId::Flurry,
+    SkillId::Chaos, SkillId::Skyfall, SkillId::MagmaChamber, SkillId::Stun, SkillId::Fear, SkillId::StoneThrow,
+    SkillId::Agile, SkillId::Heal, SkillId::Exhaust, SkillId::Drown, SkillId::Consumption, SkillId::Plague,
+    SkillId::Revival, SkillId::Ruin, SkillId::Vampire, SkillId::Explosion};
 
+
+inline std::vector<SkillId> acquiredSkills {
+};
+}
 #endif //PROJECT1_SKILLID_H

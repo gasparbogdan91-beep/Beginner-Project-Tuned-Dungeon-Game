@@ -7,6 +7,11 @@
 #include "Config.h"
 #include "Character.h"
 
+#include <iostream>
+#include <ostream>
+
+#include "RollRNG.h"
+#include "SkillId.h"
 
 
 //HP CHANGERS
@@ -353,13 +358,7 @@ bool Character::hasEvaded() {
 }
 
 
-namespace {
-unsigned skillBit(SkillId skill) {
-    const unsigned id { static_cast<unsigned>(skill) };
-    assert(id < 32 && "SkillId does not fit in the mask");
-    return 1u << id;
-}
-}
+
 
 void Character::castSkill(SkillId skill, Character& caster, Character& target) {
     switch (skill) {
@@ -398,11 +397,21 @@ void Character::castSkill(SkillId skill, Character& caster, Character& target) {
 }
 
 void Character::learnSkill(SkillId skill) {
-    m_acquiredSkills |= skillBit(skill);
+    for (std::size_t i{0}; i < SkillDb::notAcquired.size(), ++i)
+        if (SkillDb::notAcquired[i] == skill) {
+            SkillDb::acquiredSkills.push_back(std::move(SkillDb::notAcquired[i]));
+            SkillDb::notAcquired.erase(SkillDb::notAcquired.begin() + i);
+        }
+
 }
 
 bool Character::hasAcquiredSkill(SkillId skill) const {
-    return (m_acquiredSkills & skillBit(skill)) != 0;
+    for (auto i: SkillDb::acquiredSkills.size(), i++)
+        if (SkillDb::acquiredSkills[i] == skill) {
+            return true;
+        }
+    return false;
+
 }
 
 int Character::getSkillCost(SkillId skill) const {
@@ -431,6 +440,29 @@ int Character::getSkillCost(SkillId skill) const {
     }
     assert(false && "getSkillCost: unknown SkillId");
     return 0;
-
 }
+
+
+
+
+//will update ask choice when we have handleinput and draw. for now it returns random int 1-5
+int Character::askChoice() const{
+    int choice = rollchoice(rng);;
+    return choice;
+}
+
+SkillId Character::displayChooseSkills() const {
+    for (const auto& skill : SkillDb::acquiredSkills) {
+        std::cout << static_cast<int>(skill) << std::endl;
+    }
+    int choice;
+    std::cin >> choice;
+    return static_cast<SkillId>(choice);
+}
+
+
+
+
+
+
 
