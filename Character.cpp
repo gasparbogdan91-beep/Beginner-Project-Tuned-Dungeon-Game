@@ -445,5 +445,3 @@ int Character::getSkillCost(SkillId skill) const {
 void Character::useRevival() {
     if (m_revivaleffect > 0) { --m_revivaleffect; }
 }
-
-
