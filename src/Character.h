@@ -178,7 +178,7 @@ public:
 
     void castSkill(SkillId skill, Character& caster, Character& target);
     [[nodiscard]] int getSkillCost(SkillId skill) const;
-
+    SkillId askChoice();
 
     void useRevival();
     [[nodiscard]] const std::vector<SkillId>& getAcquiredSkills() const { return acquiredSkills; }

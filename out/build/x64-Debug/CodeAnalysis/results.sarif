@@ -1,0 +1,83 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "MSVC Code Analysis",
+          "version": "14.51.36260.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///c:/users/flows/source/repos/gasparbogdan91-beep/beginner-project-tuned-dungeon-game/src/combat.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "d141ba175495e23f9c4dfbb3eda3d13a8b43672c15fa16520729153ef9f80873"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/flows/source/repos/gasparbogdan91-beep/beginner-project-tuned-dungeon-game/src/combat.h"
+          },
+          "hashes": {
+            "sha-256": "ae52b1c8a5aabfdb940336ccd471afb905c4bf8074cc30ec4b9b0f2d0fef566c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/flows/source/repos/gasparbogdan91-beep/beginner-project-tuned-dungeon-game/src/character.h"
+          },
+          "hashes": {
+            "sha-256": "34a546b5488d51b061d2cb042ea7c0d52d5bbd12634a0a206ef6acd958bc179a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/flows/source/repos/gasparbogdan91-beep/beginner-project-tuned-dungeon-game/src/skillid.h"
+          },
+          "hashes": {
+            "sha-256": "6c40998c8bb87a67eb3917feec86ad62e9e6ce42d37be788fc7875747765d74c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/flows/source/repos/gasparbogdan91-beep/beginner-project-tuned-dungeon-game/src/config.h"
+          },
+          "hashes": {
+            "sha-256": "a0c86528767ca955f3f0a51f343af6a2e4dd01cfa4eeff13596e4b644dace4e2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/flows/source/repos/gasparbogdan91-beep/beginner-project-tuned-dungeon-game/src/rollrng.h"
+          },
+          "hashes": {
+            "sha-256": "c51e03bed3c299712b61573212fdcd74443d87ed55bed187ad2f7ed3481a1c14"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/users/flows/source/repos/gasparbogdan91-beep/beginner-project-tuned-dungeon-game/src/monstertable.h"
+          },
+          "hashes": {
+            "sha-256": "17aff707878733136a5fef76ecc682bfdaa6953a4f17bc25473c3c7abfd24dee"
+          }
+        }
+      ]
+    }
+  ]
+}

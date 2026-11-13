@@ -365,6 +365,7 @@ bool Character::hasEvaded() {
 
 
 
+
 void Character::castSkill(SkillId skill, Character& caster, Character& target) {
     switch (skill) {
         case SkillId::Invisible:         Target::castInvisible(caster); break;
@@ -439,7 +440,20 @@ int Character::getSkillCost(SkillId skill) const {
     return 0;
 }
 
+SkillId askChoice() {
 
+    int choice = rollspawn(rng);
+
+    switch (choice)
+    {
+    case 1: return SkillId::Invisible; break;
+    case 2: return SkillId::Burn; break;
+    }
+    return 
+
+
+
+}
 
 
 void Character::useRevival() {
