@@ -30,6 +30,26 @@ struct CharacterStats {
 };
 
 
+struct MonsterStats {
+    int health{ 100 };
+    int maxHealth{ 100 };
+    int mana{ 100 };
+    int maxMana{ 100 };
+    int defense{ 10 };
+    int skillPower{ 5 };
+    int evadeChance{ 0 };
+    int hpRegen{ 0 };
+    int manaRegen{ 0 };
+    int attackDamage{ 20 };
+    int critChance{ 0 };
+    int attackSpeed{ 1 };
+    int xp{ 0 };
+    int level{ 1 };
+    int lifesteal{ 0 };
+    bool m_typeMage{ false };
+    bool m_typeSword{ false };
+    bool m_typeArcher{ false };
+};
 
 class Character {
 private:
@@ -57,6 +77,13 @@ private:
     void gainLevel();
     int m_turnsDrowned{0};
     int m_lifesteal{0};
+
+    enum Type {
+        Mage,
+        Sword,
+        Archer,
+    };
+
     bool m_typeMage{ false };
     bool m_typeSword{ false };
     bool m_typeArcher{ false };
@@ -183,7 +210,7 @@ public:
     [[nodiscard]] bool hasAcquiredSkill(SkillId skill) const;
     void setType();
 
-
+    void setStartAttributes(Character& character);
 
 
     void castSkill(SkillId skill, Character& caster, Character& target);

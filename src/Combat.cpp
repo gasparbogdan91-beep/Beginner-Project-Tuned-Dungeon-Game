@@ -36,26 +36,8 @@ enum class EnemyChoices {
     max_choices,
 };
 
-PlayerChoices playerChoice(Character& player)
-{
-    
-    int input;
-
-    std::cin >> input;
-
-    switch (input)
-    {
-    case 1: return PlayerChoices::choiceAttack; break;
-    case 2: return PlayerChoices::choiceChooseSkill; break;
-    case 3: return PlayerChoices::choiceDefend; break;
-    case 4: return PlayerChoices::choiceSkipTurn; break;
-
-    default: return PlayerChoices::choiceSkipTurn; break;
-
-    }
 
 
-}
 
 void castChoice(PlayerChoices& choice, Character& player, Character& target)
 {
@@ -124,9 +106,9 @@ namespace {
 
              
                 applyTicks(player);
-                PlayerChoices choice{ playerChoice(player) };
+                
       
-                castChoice(choice, player, target);
+                
                 
                 g_isPlayerTurn == false;
 

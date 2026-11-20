@@ -12,7 +12,7 @@
 
 #include "RollRNG.h"
 #include "SkillId.h"
-
+#include "MonsterTable.h"
 
 //HP CHANGERS
 void Character::takeDamage(int damage) {
@@ -440,7 +440,34 @@ int Character::getSkillCost(SkillId skill) const {
     return 0;
 }
 
+void Character::setStartAttributes(Character& character) {
 
+    if (StateModifiers::characterSelection_Chosen) {
+        if (StateModifiers::characterSelection_Mage) { 
+        
+            character.setMaxMana(150);
+            character.setMana(150);
+            character.setDefense(0);
+            character.setSkillPower(25);
+        
+        }
+        else if (StateModifiers::characterSelection_Sword) { 
+            character.setAttackDamage(30);
+            character.setDefense(25);
+            character.skillPowerDecrease(10);
+
+        }
+        else if (StateModifiers::characterSelection_Archer) { 
+            character.increaseAttackSpeed(1);
+            character.setMaxMana(80);
+            character.evadeChanceIncrease(25);
+
+
+        }
+     
+
+    }
+}
 void Character::setType() {
    
     if (StateModifiers::characterSelection_Chosen) {
@@ -456,3 +483,5 @@ void Character::setType() {
 void Character::useRevival() {
     if (m_revivaleffect > 0) { --m_revivaleffect; }
 }
+
+

@@ -5,7 +5,7 @@
 #include "gui.h"
 #include <raylib.h>
 #include <filesystem>
-
+#include "MonsterTable.h"
 
 
 
@@ -17,6 +17,7 @@ int main() {
 
     Character player{ CharacterStats{} };
     
+
     while (!WindowShouldClose() && StateModifiers::g_menuState) {
         MenuGui();
     }
@@ -29,8 +30,11 @@ int main() {
     {
         
         player.setType();
-        
-        DungeonGui();
+        player.setStartAttributes(player);
+        MonsterType type = rollMonster();
+        Character monster{ stats(type, player) };
+       
+        DungeonGui(player, monster, type);
 
     }
 

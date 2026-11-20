@@ -1,10 +1,11 @@
 #pragma once
 #include "raylib.h" 
-
+#include "../src/Character.h"
+#include "../src/MonsterTable.h"
 
 void MenuGui();
 void GameGui();
-void DungeonGui();
+void DungeonGui(Character& player, Character& monster, MonsterType type);
 
 
 namespace StateModifiers {

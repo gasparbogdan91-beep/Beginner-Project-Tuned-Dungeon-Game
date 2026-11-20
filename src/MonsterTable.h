@@ -8,6 +8,7 @@
 
 #include <cmath>
 #include "Character.h"
+#include "RollRNG.h"
 inline int scale(int value, float ratio) {
     return static_cast<int>(std::lround(value * ratio));
 }
@@ -19,11 +20,33 @@ enum class MonsterType {
     Goblin = 1,
     Serpent = 2,
     Stoner = 3,
-    Archer = 4,
-    Magma = 5,
-    Lich = 6,
+    Magma = 4,
+    Lich = 5,
 
 };
+
+
+inline MonsterType rollMonster() {
+
+
+    int roll = rollspawn(rng);
+
+    switch (roll) {
+    case 1: return MonsterType::Goblin; break;
+
+    case 2: return MonsterType::Serpent; break;
+
+    case 3: return MonsterType::Stoner; break;
+
+    case 4: return MonsterType::Magma; break;
+
+    case 5: return MonsterType::Lich; break;
+
+    }
+
+
+
+}
 
 
 inline CharacterStats stats(MonsterType type, const Character& player) {
@@ -51,12 +74,7 @@ inline CharacterStats stats(MonsterType type, const Character& player) {
                      .defense = basePlusScale(def, 30, 0.75f), .skillPower = 1 * lvl,
                      .manaRegen = scale(mana, 0.1f), .attackDamage = scale(hp, 0.18f),
                      .attackSpeed = 1 };
-        case MonsterType::Archer:
-            return { .health = scale(hp, 0.7f), .maxHealth = scale(hp, 0.7f),
-                     .mana = scale(mana, 0.5f), .maxMana = scale(mana, 0.5f),
-                     .defense = basePlusScale(def, 0, 0.4f), .skillPower = 2 * lvl,
-                     .manaRegen = scale(mana, 0.1f), .attackDamage = scale(hp, 0.05f),
-                     .attackSpeed = 2 };
+        
         case MonsterType::Magma:
             return { .health = scale(hp, 0.3f), .maxHealth = scale(hp, 0.3f),
                      .mana = scale(mana, 1.5f), .maxMana = scale(mana, 1.5f),

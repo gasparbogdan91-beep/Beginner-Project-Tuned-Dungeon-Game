@@ -6,10 +6,11 @@
 #include <climits>
 #include <vector>
 #include "../src/Character.h"
+#include "../src/MonsterTable.h"
 
 namespace fs = std::filesystem;
 
-
+//
 const int width = 1280;
 const int height = 720;
 Vector2 mousePoint;
@@ -20,6 +21,7 @@ Rectangle TypeSwordRec;
 Rectangle dragRec;
 Rectangle volumeRec;
 void StartGui();
+fs::path textLoad();
 int onetickcounter{ 0 };
 int sixtytickcounter{ 0 };
 int framecounter{ 0 };
@@ -30,7 +32,283 @@ Sound bgm;
 float volume{ 0.5f };
 Sound game;
 Sound dungeon;
+Rectangle LargerMonsterGoblinRec;
 
+
+
+
+
+
+fs::path textLoad() {
+
+    if (StateModifiers::characterSelection_Archer) {
+        return fs::path(REPO_ROOT) / "resources" / "archer_idle.png";
+    }
+
+    else if (StateModifiers::characterSelection_Mage) {
+        return fs::path(REPO_ROOT) / "resources" / "mage_idle.png";
+    }
+
+    else {
+        return fs::path(REPO_ROOT) / "resources" / "knight_idle.png";
+    }
+
+}
+
+void skipIntro() {
+
+
+    if (IsKeyPressed(KEY_SPACE)) {
+
+        StateModifiers::g_introGui = false;
+        StateModifiers::g_beginRoll = true;
+
+    }
+
+}
+struct CharacterDraw {
+
+    
+    Texture2D character;
+    Rectangle charRec;
+    Rectangle largerRec;
+    Vector2 charPos;
+
+    Texture2D hpBar;
+    Rectangle hpRec;
+    Rectangle largerhpRec;
+    Vector2 hpPos;
+
+
+    Texture2D manaBar;
+    Rectangle manaRec;
+    Rectangle largermanaRec;
+    Vector2 manaPos;
+
+    Texture2D AS;
+    Rectangle asRec;
+    Rectangle smallerAsRec;
+    Vector2 asPos;
+
+    Texture2D DEF;
+    Rectangle defenseRec;
+    Rectangle smallerDefRec;
+    Vector2 defPos;
+
+
+    Texture2D SP;
+    Rectangle spRec;
+    Rectangle smallerSpRec;
+    Vector2 spPos;
+
+    
+    Texture2D goblin;
+    Texture2D serpent;
+    Texture2D stoner;
+    Texture2D magma;
+    Texture2D lich;
+    Rectangle monsterRec;
+    Rectangle largerMonsterRec;
+    Vector2 monsterPos;
+
+    Texture2D mhpBar;
+    Rectangle mhpRec;
+    Rectangle mlargerhpRec;
+    Vector2 mhpPos;
+
+
+    Texture2D mmanaBar;
+    Rectangle mmanaRec;
+    Rectangle mlargermanaRec;
+    Vector2 mmanaPos;
+
+    Texture2D mAS;
+    Rectangle masRec;
+    Rectangle msmallerAsRec;
+    Vector2 masPos;
+
+    Texture2D mDEF;
+    Rectangle mdefenseRec;
+    Rectangle msmallerDefRec;
+    Vector2 mdefPos;
+
+
+    Texture2D mSP;
+    Rectangle mspRec;
+    Rectangle msmallerSpRec;
+    Vector2 mspPos;
+
+    
+    int hp;
+    int mana;
+    int maxhp;
+    int maxmana;
+    int attackspeed;
+    int defense;
+    int skillpower;
+    int level;
+    int charFrame{ 0 };
+    int mcharFrame{ 0 };
+    int tickCounter{ 0 };
+    int mtickCounter{ 0 };
+    int xRec{ 128 };
+    int barFrame{ 0 };
+
+    int mhp;
+    int mmana;
+    int mmaxhp;
+    int mmaxmana;
+    int mattackspeed;
+    int mdefense;
+    int mskillpower;
+    int mlevel;
+    
+
+  
+    void DrawPlayer(Character& player) {
+
+        tickCounter++;
+       
+
+
+        if (tickCounter == 7)
+        {
+   
+            tickCounter = 0;
+            charFrame++;
+
+            if (charFrame == 4)
+                charFrame = 0;
+                charRec.x = charFrame * xRec;
+                
+         
+        }
+
+
+        DrawTexturePro(character, charRec, largerRec, { 0, 0 }, 0, WHITE);
+        
+        DrawTexturePro(hpBar, hpRec, largerhpRec, { 0,0 }, 0, WHITE);
+        DrawText(TextFormat("%d", hp), hpPos.x + 190, hpPos.y + 10, 18, WHITE);
+        DrawTexturePro(manaBar, manaRec, largermanaRec, { 0,0 }, 0, WHITE);
+        DrawText(TextFormat("%d", mana), manaPos.x+ 190, manaPos.y + 10, 18, WHITE);
+
+        DrawTexturePro(AS, asRec, smallerAsRec, { 0, 0 }, 0, WHITE);
+        DrawTexturePro(DEF, defenseRec, smallerDefRec, { 0, 0 }, 0, WHITE);
+        DrawTexturePro(SP, spRec, smallerSpRec, { 0, 0 }, 0, WHITE);
+        DrawText(TextFormat("%d  ", attackspeed), asPos.x + 40, asPos.y + 10, 18, WHITE);
+        DrawText(TextFormat("%d  ", defense), defPos.x + 40, defPos.y + 10, 18, WHITE);
+        DrawText(TextFormat("%d  ", skillpower), spPos.x + 40, spPos.y + 10, 18, WHITE);
+        DrawText(TextFormat("LV. %d ", level), spPos.x + 200, spPos.y - 130, 24, YELLOW);
+
+        DrawText("YOU", manaPos.x + 90, manaPos.y - 120, 64, BLACK);
+        DrawText("YOU", manaPos.x + 90, manaPos.y - 125, 64, YELLOW);
+        
+    }
+
+    void UpdateBar(Character& player)  {
+
+        
+
+        hp = player.getHealth();
+        mana = player.getMana();
+        maxhp = player.getMaxHealth();
+        maxmana = player.getMaxMana();
+        attackspeed = player.getAttackSpeed();
+        defense = player.getDefense();
+        skillpower = player.getSkillPower();
+        level = player.getLevel();
+
+        int f = static_cast<int>(std::ceil(hp * 10.0f / maxhp));
+        hpRec.y = std::clamp(f, 0, 10) * 24;
+       
+        int g = static_cast<int>(std::ceil(mana * 10.0f / maxmana));
+        manaRec.y = std::clamp(g, 0, 10) * 24;
+
+        
+    }
+
+    void DrawMonster(Character& mob, MonsterType type) {
+        
+        mtickCounter++;
+        
+
+        if (mtickCounter == 7)
+        {
+
+            mtickCounter = 0;
+            mcharFrame++;
+
+            if (mcharFrame == 4)
+                mcharFrame = 0;
+            monsterRec.x = mcharFrame * xRec;
+
+
+        }
+
+        if (type == MonsterType::Goblin) {
+            DrawTexturePro(goblin, monsterRec, largerMonsterRec, { 0,0 }, 0, WHITE);
+            DrawText("THE GOBLIN", mmanaPos.x - 50, mmanaPos.y - 120, 64, BLACK);
+            DrawText("THE GOBLIN", mmanaPos.x - 50, mmanaPos.y - 125, 64, YELLOW);
+
+
+        }
+
+        if (type == MonsterType::Serpent) {
+            DrawTexturePro(serpent, monsterRec, largerMonsterRec, { 0,0 }, 0, WHITE);
+            DrawText("THE SERPENT", mmanaPos.x - 50, mmanaPos.y - 120, 64, BLACK);
+            DrawText("THE SERPENT", mmanaPos.x - 50, mmanaPos.y - 125, 64, YELLOW);
+        }
+        if (type == MonsterType::Stoner) {
+            DrawTexturePro(stoner, monsterRec, largerMonsterRec, { 0,0 }, 0, WHITE);
+            DrawText("THE STONER", mmanaPos.x - 50, mmanaPos.y - 120, 64, BLACK);
+            DrawText("THE STONER", mmanaPos.x - 50, mmanaPos.y - 125, 64, YELLOW);
+        }
+        if (type == MonsterType::Magma) {
+            DrawTexturePro(magma, monsterRec, largerMonsterRec, { 0,0 }, 0, WHITE);
+            DrawText("THE MAGMA", mmanaPos.x - 50, mmanaPos.y - 120, 64, BLACK);
+            DrawText("THE MAGMA", mmanaPos.x - 50, mmanaPos.y - 125, 64, YELLOW);
+        }
+        if (type == MonsterType::Lich) {
+            DrawTexturePro(lich, monsterRec, largerMonsterRec, { 0,0 }, 0, WHITE);
+            DrawText("THE LICH", mmanaPos.x - 50, mmanaPos.y - 120, 64, BLACK);
+            DrawText("THE LICH", mmanaPos.x - 50, mmanaPos.y - 125, 64, YELLOW);
+        }
+
+        DrawTexturePro(mhpBar, mhpRec, mlargerhpRec, { 0,0 }, 0, WHITE);
+        DrawText(TextFormat("%d", mhp), mhpPos.x + 190, mhpPos.y + 10, 18, WHITE);
+        DrawTexturePro(mmanaBar, mmanaRec, mlargermanaRec, { 0,0 }, 0, WHITE);
+        DrawText(TextFormat("%d", mmana), mmanaPos.x + 190, mmanaPos.y + 10, 18, WHITE);
+
+        DrawTexturePro(mAS, masRec, msmallerAsRec, { 0, 0 }, 0, WHITE);
+        DrawTexturePro(mDEF, mdefenseRec, msmallerDefRec, { 0, 0 }, 0, WHITE);
+        DrawTexturePro(mSP, mspRec, msmallerSpRec, { 0, 0 }, 0, WHITE);
+        DrawText(TextFormat("%d  ", mattackspeed), masPos.x + 40, masPos.y + 10, 18, WHITE);
+        DrawText(TextFormat("%d  ", mdefense), mdefPos.x + 40, mdefPos.y + 10, 18, WHITE);
+        DrawText(TextFormat("%d  ", mskillpower), mspPos.x + 40, mspPos.y + 10, 18, WHITE);
+        DrawText(TextFormat("LV. %d ", mlevel), mspPos.x - 300, mspPos.y - 130, 24, YELLOW);
+    }
+
+    void UpdateMobBar(Character& mob) {
+
+
+
+        mhp = mob.getHealth();
+        mmana = mob.getMana();
+        mmaxhp = mob.getMaxHealth();
+        mmaxmana = mob.getMaxMana();
+        mattackspeed = mob.getAttackSpeed();
+        mdefense = mob.getDefense();
+        mskillpower = mob.getSkillPower();
+        mlevel = mob.getLevel();
+        int f = static_cast<int>(std::ceil(hp * 10.0f / maxhp));
+        mhpRec.y = std::clamp(f, 0, 10) * 24;
+
+        int g = static_cast<int>(std::ceil(mana * 10.0f / maxmana));
+        mmanaRec.y = std::clamp(g, 0, 10) * 24;
+
+
+    }
+    };
 
 class BGM {
     
@@ -527,7 +805,7 @@ void GameGui() {
     while (!WindowShouldClose() && StateModifiers::g_chooseState)
     {
         swordFrame++;
-        heroFrame++;
+        
 
         song.playGameMusic();
 
@@ -570,6 +848,7 @@ void GameGui() {
      
          if (swordFrame == 15) {
              swordFrame = 0;
+             heroFrame++;
              if (heroFrame == 4)
                  heroFrame = 0;
              knightRec.x = heroFrame * 128;
@@ -607,17 +886,39 @@ void GameGui() {
 }
 
 
-void DungeonGui() {
+void DungeonGui(Character& player, Character& mob, MonsterType type) {
 
     fs::path gameSound = fs::path(REPO_ROOT) / "resources" / "dungeon.wav";
 
 
+    fs::path goblin = fs::path(REPO_ROOT) / "resources" / "monster1_goblin.png";
+    Texture2D goblinText = LoadTexture(goblin.string().c_str());
+    fs::path serpent = fs::path(REPO_ROOT) / "resources" / "monster2_serpent.png";
+    Texture2D serpentText = LoadTexture(serpent.string().c_str());
+    fs::path stoner = fs::path(REPO_ROOT) / "resources" / "monster3_stoner.png";
+    Texture2D stonerText = LoadTexture(stoner.string().c_str());
+    fs::path magma = fs::path(REPO_ROOT) / "resources" / "monster4_magma.png";
+    Texture2D magmaText = LoadTexture(magma.string().c_str());
+    fs::path lich = fs::path(REPO_ROOT) / "resources" / "monster5_lich.png";
+    Texture2D lichText = LoadTexture(lich.string().c_str());
+
+    Vector2 monsterPos = { 800, 380 };
+    Rectangle monsterRec{ 0,0, 128, 128 };
+    Rectangle largerMonsterGoblinRec{ monsterPos.x - 100, monsterPos.y, 384, 384 };
+    Rectangle largerMonsterRec{ monsterPos.x, monsterPos.y, 384, 384 };
+    Vector2 mhpVec = { 850, 120 };
+    Vector2 mmanaVec = { 850, 150 };
+    Vector2 masPos{ 1115, 190 };
+    Vector2 mdefVec{ 905, 190 };
+    Vector2 mspVec{ 1010, 190 };
     fs::path torch = fs::path(REPO_ROOT) / "resources" / "out3" / "torch_glow.png";
     fs::path fog = fs::path(REPO_ROOT) / "resources" / "out3" / "fog_tile.png";
-    fs::path layer0 = fs::path(REPO_ROOT) / "resources" / "out3" / "layer0_room.png";
+    fs::path layer0 = fs::path(REPO_ROOT) / "resources" / "out3" / "0.png";
     fs::path layer1 = fs::path(REPO_ROOT) / "resources" / "out3" / "layer3_foreground.png";
     dungeon = LoadSound(gameSound.string().c_str());
 
+    Rectangle largerBG{ 0, 0, 1280, 720 };
+    Rectangle bgRec{ 0, 0, 384, 216 };
     Texture2D torchT = LoadTexture(torch.string().c_str());
     Texture2D fogT = LoadTexture(fog.string().c_str());
     Texture2D layer0T = LoadTexture(layer0.string().c_str());
@@ -627,20 +928,77 @@ void DungeonGui() {
     Vector2 fogPos{ 0, 300 };
     int clockTick{ 0 };
     int clockTick2{ 0 };
-   
+
+
+
+    fs::path hpPath = fs::path(REPO_ROOT) / "resources" / "hp_bar_sheet.png";
+    Texture2D hpText = LoadTexture(hpPath.string().c_str());
+    Rectangle hpRec = { 0, 0, 160, 24 };
+    Vector2 hpVec = { 100, 120 };
+    Rectangle largerHpRec = { hpVec.x, hpVec.y, 360, 44 };
+    Rectangle largerMobHpRec = { mhpVec.x, mhpVec.y, 360, 44 };
+
+    fs::path manaPath = fs::path(REPO_ROOT) / "resources" / "mana_bar_sheet.png";
+    Texture2D manaText = LoadTexture(manaPath.string().c_str());
+    Rectangle manaRec = { 0, 0, 160, 24 };
+    Vector2 manaVec = { 100, 150 };
+    Rectangle largerManaRec = { manaVec.x, manaVec.y, 360, 44 };
+    Rectangle largerMobManaRec = { mmanaVec.x, mmanaVec.y, 360, 44 };
+    fs::path playerText = textLoad();
+
+    Texture2D playerTexture = LoadTexture(playerText.string().c_str());
+    Rectangle playerRec = { 0, 0, 128, 128 };
+    Vector2 playerVec = { 50, 210 };
+    Rectangle largerRec = { playerVec.x, playerVec.y, 512, 512 };
+
+
+    fs::path asPath = fs::path(REPO_ROOT) / "resources" / "attackspeed.png";
+    Texture2D asText = LoadTexture(asPath.string().c_str());
+    Rectangle asRec = { 0, 0, 512, 512 };
+    Vector2 asVec = { 415, 190 };
+
+    Rectangle largerAsRec = { asVec.x, asVec.y, 32, 32 };
+    Rectangle largerMobAsRec = { masPos.x, masPos.y, 32, 32 };
+
+
+    fs::path defPath = fs::path(REPO_ROOT) / "resources" / "shield.png";
+    Texture2D defText = LoadTexture(defPath.string().c_str());
+    Rectangle defRec = { 0, 0, 512, 512 };
+    Vector2 defVec = { 200, 190 };
+    Rectangle largerDefRec = { defVec.x, defVec.y, 32, 32 };
+    Rectangle largerMobDefRec = { mdefVec.x, mdefVec.y, 32, 32 };
+
+    fs::path spPath = fs::path(REPO_ROOT) / "resources" / "skillpower.png";
+    Texture2D spText = LoadTexture(spPath.string().c_str());
+    Rectangle spRec = { 0, 0, 512, 512 };
+    Vector2 spVec = { 295,  190 };
+    Rectangle largerSpRec = { spVec.x, spVec.y, 32, 32};
+    Rectangle largerMobSpRec = { mspVec.x, mspVec.y, 32, 32 };
+
+
+    CharacterDraw charDraw{ .character = playerTexture, .charRec = playerRec, .largerRec = largerRec, .charPos = playerVec, .hpBar = hpText, .hpRec = hpRec, .largerhpRec = largerHpRec, .hpPos = hpVec,
+        .manaBar = manaText, .manaRec = manaRec, .largermanaRec = largerManaRec, .manaPos = manaVec, .AS = asText, .asRec = asRec, .smallerAsRec = largerAsRec, .asPos = asVec,
+         .DEF = defText, .defenseRec = defRec, .smallerDefRec = largerDefRec, .defPos = defVec, .SP = spText, .spRec = spRec, .smallerSpRec = largerSpRec, .spPos = spVec, .goblin = goblinText, .serpent = serpentText,
+        .stoner = stonerText, .magma = magmaText, .lich = lichText, .monsterRec = monsterRec, .largerMonsterRec = largerMonsterRec, .monsterPos = monsterPos, .mhpBar = hpText, .mhpRec = hpRec, .mlargerhpRec = largerMobHpRec,
+        .mhpPos = mhpVec, .mmanaBar = manaText, .mmanaRec = manaRec, .mlargermanaRec = largerMobManaRec, .mmanaPos = mmanaVec, .mAS = asText, .masRec = asRec, .msmallerAsRec = largerMobAsRec, .masPos = masPos,
+        .mDEF = defText, .mdefenseRec = defRec, .msmallerDefRec = largerMobDefRec, .mdefPos = mdefVec, .mSP = spText, .mspRec = spRec, .msmallerSpRec = largerMobSpRec, .mspPos = mspVec };
 
     SetTargetFPS(60);
+
     while (!WindowShouldClose() && StateModifiers::g_introGui)
     {
+       
+
         clockTick++;
         song.playDungeonMusic();
-
+        skipIntro();
         BeginDrawing();
         ClearBackground(BLACK);
 
-        
+
         DrawText("You enter the dungeon, freightened. The floor is damp, the walls are dark and seem to be closing. \n From afar, you hear a crackling sound. You light a torch. From the far end, you only see a shape. \n As it closes in, you raise up your weapon, and fear for the worst. Now it begins.", TypeArcherRec.x, TypeArcherRec.y, 20, WHITE);
 
+        DrawText("Press SPACEBAR to SKIP instantly", 50, 50, 18, WHITE);
 
 
 
@@ -656,42 +1014,49 @@ void DungeonGui() {
     while (!WindowShouldClose() && StateModifiers::g_beginRoll)
     {
         clockTick2++;
-       
-        
+        charDraw.UpdateMobBar(mob);
+        charDraw.UpdateBar(player);
+
         BeginDrawing();
         ClearBackground(BLACK);
 
 
         if (clockTick2 == 0) {
             DrawTexture(torchT, 300, 200, WHITE);
+            
         }
-       
+
         if (clockTick2 > 80 && clockTick2 < 120)
         {
-            DrawTexture(layer0T, 0, 0, WHITE);
+            DrawTexturePro(layer0T, bgRec, largerBG, { 0,0 }, 0, WHITE);
             DrawTexture(layer1T, 0, 0, WHITE);
+            charDraw.DrawPlayer(player);
 
-            
         }
 
         if (clockTick2 > 180)
         {
-            DrawTexture(layer0T, 0, 0, WHITE);
+            DrawTexturePro(layer0T, bgRec, largerBG, { 0,0 }, 0, WHITE);
             DrawTexture(layer1T, 0, 0, WHITE);
+            DrawRectangle(0, height - 695, 1280, 90, BLACK);
+            DrawRectangle(0, height - 700, 1280, 80, RED);
+            DrawRectangle(0, height - 700, 640, 80, ORANGE);
 
+            DrawRectangle(0, height - 610, 1280, 80, Fade(GRAY, 0.3f));
+            charDraw.DrawPlayer(player);
+            charDraw.DrawMonster(mob, type);
 
         }
-
+        
         DrawTexture(fogT, fogPos.x, fogPos.y, WHITE);
-       
+        
+
 
         EndDrawing();
     }
- 
+
     StopSound(dungeon);
     UnloadSound(dungeon);
-
-
 
 
 }
