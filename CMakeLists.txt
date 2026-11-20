@@ -26,6 +26,9 @@ add_executable(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/include")
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gui")
 
+target_compile_definitions(project1 PRIVATE
+    REPO_ROOT="${CMAKE_SOURCE_DIR}"
+)
 # 2. Look for the static library inside the repo's thirdparty/lib folder
 find_library(RAYLIB_LIBRARY_PATH
     NAMES raylib

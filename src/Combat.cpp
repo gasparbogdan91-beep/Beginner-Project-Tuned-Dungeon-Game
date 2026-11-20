@@ -77,15 +77,7 @@ void castChoice(PlayerChoices& choice, Character& player, Character& target)
 
 
 
-    case PlayerChoices::choiceChooseSkill: {
-        
-        SkillId skill{ player.askChoice() };
-        int skillcost{ player.getSkillCost(skill) };
-        if (player.hasAcquiredSkill(skill) && player.getMana() > skillcost)
-            player.castSkill(skill, player, target);
-
-    }
-
+    
 
     case PlayerChoices::choiceDefend:  break;
     case PlayerChoices::choiceSkipTurn:  break;
@@ -139,31 +131,8 @@ namespace {
                 g_isPlayerTurn == false;
 
 
-                
-
-
-
-
-
-
-
-
-
             }
             
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

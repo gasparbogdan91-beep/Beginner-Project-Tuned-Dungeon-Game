@@ -10,12 +10,30 @@
 
 
 int main() {
+
+
+    InitWindow(1280, 720, "GAME");
+    InitAudioDevice();
+
+    Character player{ CharacterStats{} };
     
+    while (!WindowShouldClose() && StateModifiers::g_menuState) {
+        MenuGui();
+    }
+    while (!WindowShouldClose() && StateModifiers::g_chooseState)
+    {
+        GameGui();
 
-    MenuGui();
+    }
+    while (!WindowShouldClose() && StateModifiers::g_startGameState)
+    {
+        
+        player.setType();
+        
+        DungeonGui();
 
+    }
 
-
-
+    CloseWindow();
     return 0;
 }

@@ -23,7 +23,10 @@ struct CharacterStats {
     int xp{0};
     int level{1};
     int lifesteal{0};
-
+    bool m_typeMage{ false };
+    bool m_typeSword{ false };
+    bool m_typeArcher{ false };
+    
 };
 
 
@@ -54,17 +57,19 @@ private:
     void gainLevel();
     int m_turnsDrowned{0};
     int m_lifesteal{0};
-
+    bool m_typeMage{ false };
+    bool m_typeSword{ false };
+    bool m_typeArcher{ false };
 
      std::vector<SkillId> acquiredSkills {};
 
 public:
     explicit Character(const CharacterStats& stats)
-        :  m_health { stats.health }, m_maxHealth { stats.maxHealth }, m_mana { stats.mana },
-            m_maxMana { stats.maxMana }, m_defense { stats.defense}, m_skillPower { stats.skillPower },
-            m_evadeChance { stats.evadeChance}, m_hpRegen { stats.hpRegen }, m_manaRegen { stats.manaRegen },
-            m_attackDamage {stats.attackDamage}, m_critChance{ stats.critChance }, m_attackSpeed { stats.attackSpeed },
-            m_xp { stats.xp }, m_level { stats.level }, m_lifesteal { stats.lifesteal }
+        : m_health{ stats.health }, m_maxHealth{ stats.maxHealth }, m_mana{ stats.mana },
+        m_maxMana{ stats.maxMana }, m_defense{ stats.defense }, m_skillPower{ stats.skillPower },
+        m_evadeChance{ stats.evadeChance }, m_hpRegen{ stats.hpRegen }, m_manaRegen{ stats.manaRegen },
+        m_attackDamage{ stats.attackDamage }, m_critChance{ stats.critChance }, m_attackSpeed{ stats.attackSpeed },
+        m_xp{ stats.xp }, m_level{ stats.level }, m_lifesteal{ stats.lifesteal }, m_typeMage{ stats.m_typeArcher }, m_typeArcher{ stats.m_typeArcher }, m_typeSword{ stats.m_typeSword }
 
     {
         assert(m_health >= 0 && "Health is less than 0");
@@ -105,7 +110,6 @@ public:
     [[nodiscard]] int getLevel() const { return m_level; };
     [[nodiscard]] int xpToNextLevel() const ;
 
-
     //debuff checkers
     [[nodiscard]] bool hasMana() const { return m_mana > 0; }
     [[nodiscard]] bool hasLifesteal() const { return m_lifesteal > 0; }
@@ -118,7 +122,9 @@ public:
     [[nodiscard]] bool isInvisible() const { return m_turnsInvisible > 0; }
     [[nodiscard]] bool isExhausted() const { return m_turnsExhausted > 0; }
     [[nodiscard]] bool isDrowned() const { return m_turnsDrowned > 0; }
-
+    [[nodiscard]] bool isArcherType() const { return m_typeArcher; }
+    [[nodiscard]] bool isMageType() const { return m_typeMage; }
+    [[nodiscard]] bool isSwordType() const { return m_typeSword; }
     // function declarations
     void increaseMaxHealth(int amount);
     void takeDamage(int damage);
@@ -175,6 +181,10 @@ public:
     void takeTrueDamage(int damage);
     void learnSkill(SkillId skill);
     [[nodiscard]] bool hasAcquiredSkill(SkillId skill) const;
+    void setType();
+
+
+
 
     void castSkill(SkillId skill, Character& caster, Character& target);
     [[nodiscard]] int getSkillCost(SkillId skill) const;

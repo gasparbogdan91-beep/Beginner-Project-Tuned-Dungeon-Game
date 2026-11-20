@@ -6,7 +6,7 @@
 #include <algorithm>
 #include "Config.h"
 #include "Character.h"
-
+#include "gui.h"
 #include <iostream>
 #include <ostream>
 
@@ -440,21 +440,18 @@ int Character::getSkillCost(SkillId skill) const {
     return 0;
 }
 
-SkillId askChoice() {
 
-    int choice = rollspawn(rng);
+void Character::setType() {
+   
+    if (StateModifiers::characterSelection_Chosen) {
+        if (StateModifiers::characterSelection_Mage) { m_typeMage = true; }
+        else if (StateModifiers::characterSelection_Sword) { m_typeSword = true; }
+        else if (StateModifiers::characterSelection_Archer) { m_typeArcher = true; }
+        else { m_typeSword = true; }
 
-    switch (choice)
-    {
-    case 1: return SkillId::Invisible; break;
-    case 2: return SkillId::Burn; break;
     }
-    return 
-
-
-
+    
 }
-
 
 void Character::useRevival() {
     if (m_revivaleffect > 0) { --m_revivaleffect; }

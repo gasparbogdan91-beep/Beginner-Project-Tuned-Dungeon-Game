@@ -51,6 +51,7 @@ build cmake_object_order_depends_target_project1: phony || .
 
 build CMakeFiles\project1.dir\src\main.cpp.obj: CXX_COMPILER__project1_unscanned_Debug C$:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\src\main.cpp || cmake_object_order_depends_target_project1
   CONFIG = Debug
+  DEFINES = -DREPO_ROOT=\"C:/Users/flows/source/repos/gasparbogdan91-beep/Beginner-Project-Tuned-Dungeon-Game\"
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 /ZI -std:c++latest -MDd
   INCLUDES = -IC:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\thirdparty\include -IC:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\gui
   OBJECT_DIR = CMakeFiles\project1.dir
@@ -61,6 +62,7 @@ build CMakeFiles\project1.dir\src\main.cpp.obj: CXX_COMPILER__project1_unscanned
 
 build CMakeFiles\project1.dir\src\Character.cpp.obj: CXX_COMPILER__project1_unscanned_Debug C$:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\src\Character.cpp || cmake_object_order_depends_target_project1
   CONFIG = Debug
+  DEFINES = -DREPO_ROOT=\"C:/Users/flows/source/repos/gasparbogdan91-beep/Beginner-Project-Tuned-Dungeon-Game\"
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 /ZI -std:c++latest -MDd
   INCLUDES = -IC:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\thirdparty\include -IC:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\gui
   OBJECT_DIR = CMakeFiles\project1.dir
@@ -71,6 +73,7 @@ build CMakeFiles\project1.dir\src\Character.cpp.obj: CXX_COMPILER__project1_unsc
 
 build CMakeFiles\project1.dir\src\Combat.cpp.obj: CXX_COMPILER__project1_unscanned_Debug C$:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\src\Combat.cpp || cmake_object_order_depends_target_project1
   CONFIG = Debug
+  DEFINES = -DREPO_ROOT=\"C:/Users/flows/source/repos/gasparbogdan91-beep/Beginner-Project-Tuned-Dungeon-Game\"
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 /ZI -std:c++latest -MDd
   INCLUDES = -IC:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\thirdparty\include -IC:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\gui
   OBJECT_DIR = CMakeFiles\project1.dir
@@ -81,6 +84,7 @@ build CMakeFiles\project1.dir\src\Combat.cpp.obj: CXX_COMPILER__project1_unscann
 
 build CMakeFiles\project1.dir\src\Boon.cpp.obj: CXX_COMPILER__project1_unscanned_Debug C$:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\src\Boon.cpp || cmake_object_order_depends_target_project1
   CONFIG = Debug
+  DEFINES = -DREPO_ROOT=\"C:/Users/flows/source/repos/gasparbogdan91-beep/Beginner-Project-Tuned-Dungeon-Game\"
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 /ZI -std:c++latest -MDd
   INCLUDES = -IC:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\thirdparty\include -IC:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\gui
   OBJECT_DIR = CMakeFiles\project1.dir
@@ -91,6 +95,7 @@ build CMakeFiles\project1.dir\src\Boon.cpp.obj: CXX_COMPILER__project1_unscanned
 
 build CMakeFiles\project1.dir\gui\gui.cpp.obj: CXX_COMPILER__project1_unscanned_Debug C$:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\gui\gui.cpp || cmake_object_order_depends_target_project1
   CONFIG = Debug
+  DEFINES = -DREPO_ROOT=\"C:/Users/flows/source/repos/gasparbogdan91-beep/Beginner-Project-Tuned-Dungeon-Game\"
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 /ZI -std:c++latest -MDd
   INCLUDES = -IC:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\thirdparty\include -IC:\Users\flows\source\repos\gasparbogdan91-beep\Beginner-Project-Tuned-Dungeon-Game\gui
   OBJECT_DIR = CMakeFiles\project1.dir
